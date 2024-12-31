@@ -9,7 +9,10 @@ export class StorageService {
   private localStorage: LocalStorage;
   private isInitialized: boolean;
 
-  constructor(private readonly api: HomebridgeAPI, private readonly log: HomebridgeLogging) {
+  constructor(
+    private readonly api: HomebridgeAPI,
+    private readonly log: HomebridgeLogging
+  ) {
     this.localStoragePath = path.join(api.user.storagePath(), 'homebridge-vicare-2-settings.json');
     this.localStorage = {};
     this.isInitialized = false;

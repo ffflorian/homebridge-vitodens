@@ -14,7 +14,7 @@ import {RequestService} from './RequestService.js';
 import {StorageService} from './StorageService.js';
 import {AuthenticationService} from './AuthenticationService.js';
 
-const clientId = '';
+const clientId = 'a516fff2622fd70cb714e8a356c4964e';
 
 export class ExampleHomebridgePlatform implements HomebridgeDynamicPlatformPlugin {
   public readonly Service: typeof HomebridgeService;

@@ -5,7 +5,10 @@ export class RequestService {
   private accessToken?: string;
   private refreshToken?: string;
 
-  constructor(private readonly log: HomebridgeLogging, private clientId: string) {}
+  constructor(
+    private readonly log: HomebridgeLogging,
+    private clientId: string
+  ) {}
 
   public setAccessToken(accessToken: string): void {
     this.accessToken = accessToken;
