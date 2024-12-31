@@ -8,7 +8,6 @@ export default tseslint.config(
   {
     rules: {
       quotes: ['error', 'single'],
-      indent: ['error', 2, {SwitchCase: 0}],
       'linebreak-style': ['error', 'unix'],
       semi: ['error', 'always'],
       'dot-notation': 'error',
@@ -16,7 +15,6 @@ export default tseslint.config(
       curly: ['error', 'all'],
       'brace-style': ['error'],
       'prefer-arrow-callback': 'warn',
-      'max-len': ['warn', 160],
       'object-curly-spacing': ['error', 'never'],
       'no-use-before-define': 'off',
       '@typescript-eslint/no-use-before-define': ['error', {classes: false, enums: false}],

@@ -13,6 +13,8 @@ import {PLATFORM_NAME, PLUGIN_NAME} from './settings.js';
 import {RequestService} from './RequestService.js';
 import {StorageService} from './StorageService.js';
 import {AuthenticationService} from './AuthenticationService.js';
+import {ViCareThermostatAccessory} from './ViCareThermostatAccessory.js';
+import { LocalDevice } from './@types/interfaces.js';
 
 const clientId = 'a516fff2622fd70cb714e8a356c4964e';
 
@@ -27,6 +29,7 @@ export class ExampleHomebridgePlatform implements HomebridgeDynamicPlatformPlugi
   private readonly authenticationService: AuthenticationService;
   private readonly requestService: RequestService;
   private readonly storageService: StorageService;
+  private readonly thermostatAccessory: ViCareThermostatAccessory;
 
   constructor(
     public readonly log: HomebridgeLogging,
@@ -43,6 +46,7 @@ export class ExampleHomebridgePlatform implements HomebridgeDynamicPlatformPlugi
       this.storageService,
       clientId
     );
+    this.thermostatAccessory = new ViCareThermostatAccessory(this.api, this.log, this.requestService, '', '', '', {});
 
     this.log.debug('Finished initializing platform:', this.config.name);
 
@@ -53,6 +57,44 @@ export class ExampleHomebridgePlatform implements HomebridgeDynamicPlatformPlugi
       await this.requestService.refreshAuth();
       await this.discoverDevices();
     });
+  }
+
+  private addAccessory(deviceConfig: HomebridgePlatformConfig & LocalDevice): void {
+    const uuid = this.api.hap.uuid.generate(deviceConfig.name!);
+    let accessory = this.accessories.find(acc => acc.UUID === uuid);
+
+    if (!accessory) {
+      accessory = new this.api.hap.Accessory(deviceConfig.name!, uuid);
+      this.api.registerPlatformAccessories('homebridge-vicare-2', 'ViCareThermostatPlatform', [accessory]);
+      this.accessories.push(accessory);
+      this.log.debug(`Added new accessory: "${deviceConfig.name}"`);
+    }
+
+    const vicareAccessory = new ViCareThermostatAccessory(
+      this.api,
+      this.log,
+      this.requestService,
+      this.apiEndpoint,
+      this.installationId!.toString(),
+      this.gatewaySerial!,
+      deviceConfig
+    );
+
+    accessory.context.deviceConfig = deviceConfig;
+    accessory
+      .getService(this.api.hap.Service.AccessoryInformation)
+      ?.setCharacteristic(this.api.hap.Characteristic.Manufacturer, 'Viessmann')
+      .setCharacteristic(this.api.hap.Characteristic.Model, 'ViCare')
+      .setCharacteristic(this.api.hap.Characteristic.SerialNumber, 'Default-Serial');
+
+    for (const service of vicareAccessory.getServices()) {
+      const serviceExists = accessory.getServiceById(service.UUID, service.subtype!);
+      if (!serviceExists) {
+        accessory.addService(service);
+      }
+    }
+
+    this.api.updatePlatformAccessories([accessory]);
   }
 
   /**
@@ -66,11 +108,6 @@ export class ExampleHomebridgePlatform implements HomebridgeDynamicPlatformPlugi
     this.accessories.set(accessory.UUID, accessory);
   }
 
-  /**
-   * This is an example method showing how to register discovered accessories.
-   * Accessories must only be registered once, previously created accessories
-   * must not be registered again to prevent "duplicate UUID" errors.
-   */
   async discoverDevices(): Promise<void> {
     // EXAMPLE ONLY
     // A real plugin you would discover accessories from the local network, cloud services

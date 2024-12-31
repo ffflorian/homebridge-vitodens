@@ -9,14 +9,14 @@
   "description": "A short description about what your plugin does.",
   "devDependencies": {
     "@eslint/js": "^9.14.0",
-    "@ffflorian/prettier-config": "0.3.3",
+    "@ffflorian/prettier-config": "^0.3.3",
     "@types/eslint__js": "^8.42.3",
     "@types/node": "^22.8.6",
     "eslint": "^9.14.0",
     "homebridge": "^2.0.0-beta.0",
-    "internal-ip": "8.0.0",
+    "internal-ip": "^8.0.0",
     "nodemon": "^3.1.7",
-    "prettier": "3.4.2",
+    "prettier": "^3.4.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.12.2"
