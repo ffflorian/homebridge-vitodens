@@ -1,0 +1,51 @@
+{
+  "author": "Florian Imdahl <git@ffflorian.dev>",
+  "bugs": {
+    "url": "https://github.com/ffflorian/homebridge-vitodens/issues"
+  },
+  "dependencies": {
+    "homebridge-lib": "^7.1.0"
+  },
+  "description": "A short description about what your plugin does.",
+  "devDependencies": {
+    "@eslint/js": "^9.14.0",
+    "@ffflorian/prettier-config": "0.3.3",
+    "@types/eslint__js": "^8.42.3",
+    "@types/node": "^22.8.6",
+    "eslint": "^9.14.0",
+    "homebridge": "^2.0.0-beta.0",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.12.2"
+  },
+  "displayName": "Vitodens",
+  "engines": {
+    "homebridge": "^1.8.0 || ^2.0.0-beta.0",
+    "node": "^18.20.4 || ^20.18.0 || ^22.10.0"
+  },
+  "homepage": "https://github.com/ffflorian/homebridge-vitodens#readme",
+  "keywords": [
+    "homebridge-plugin",
+    "viessmann",
+    "vitodens"
+  ],
+  "license": "GPL-3.0",
+  "main": "dist/index.js",
+  "name": "homebridge-vitodens",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ffflorian/homebridge-vitodens.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "dist": "yarn clean && yarn build",
+    "lint": "eslint . --max-warnings=0",
+    "prepublishOnly": "npm run lint && npm run build",
+    "watch": "npm run build && npm link && nodemon"
+  },
+  "type": "module",
+  "version": "1.0.0"
+}
